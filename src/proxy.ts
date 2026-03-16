@@ -7,6 +7,12 @@ import { getAuthInfoFromCookie } from '@/lib/auth';
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  const isAdminPage = pathname.startsWith('/admin');
+  
+  if (!isAdminPage) {
+    return NextResponse.next();
+  }
+  
   // 处理成人内容模式路径重写
   // 如果路径以 /adult/ 开头，重写到实际 API 路径并添加 adult 标记
   if (pathname.startsWith('/adult/')) {
